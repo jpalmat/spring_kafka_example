@@ -15,11 +15,16 @@ public class UserResource {
 	
 	@Autowired
 	KafkaTemplate<String, User> kafkaTemplate;
-	private static final String topic = "kafka_example";
 
 	@GetMapping("public/{name}")
 	public String post(@PathVariable("name") final String name) {
-		kafkaTemplate.send(topic , new User(name, "MUM", 100000L));
+		kafkaTemplate.send("kafka_example" , new User(name, "MUM", 100000L));
+		return "publish succesfully";
+	}
+	
+	@GetMapping("publicJson/{name}")
+	public String postUser(@PathVariable("name") final String name) {
+		kafkaTemplate.send("kafka_example_json" , new User(name, "MUM", 100000L));
 		return "publish succesfully";
 	}
 }
